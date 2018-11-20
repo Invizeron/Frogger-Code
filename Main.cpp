@@ -4,6 +4,13 @@
 #include <string> 
 #include <conio.h> 
 
+//Simple messages/outputs the program gives title.
+const HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+COORD title;
+COORD cursorPos;
+
+
 #define KEY_UP 72 
 #define KEY_DOWN 80 
 #define KEY_LEFT 75 
@@ -118,13 +125,27 @@ void update()
 }
 
 int main() {
-
-
+	//title, end, and typing start location
+	title.X = 0;
+	title.Y = 1;
+	//seting the title to come out big
+	SetConsoleTitle("Guess GRU");
+	SetConsoleTextAttribute(hOut, 6);
+	//the console size
+	::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+	//setting font for large output
+	fontSize(300);
+	SetConsoleCursorPosition(hOut, title);
+	centreString("The Slug King");
+	SetConsoleCursorPosition(hOut, cursorPos);
+	//sleep and clear for formatting and output
+	Sleep(5650);
+	system("CLS");
 	//plays the music file defined in the other .cpp
 	playMusic();
 
 
-
+	fontSize(20);
 	setMap();
 	while (end == false)
 	{
