@@ -8,6 +8,9 @@ The code comprises of audio, and text manipulation (center & fontsize).
 #include <string>
 #include <conio.h>
 
+using std::string;
+using namespace std;
+
 //All required header files
 //sound file playing in background
 #include "Sound.h"
