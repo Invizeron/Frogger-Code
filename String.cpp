@@ -18,7 +18,7 @@ void centreString(std::string inputString)
 	//Output
 	std::cout << inputString;
 }
-
+//Function for font size
 void fontSize(int size) {
 	PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();
 	lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);
@@ -27,4 +27,13 @@ void fontSize(int size) {
 	lpConsoleCurrentFontEx->dwFontSize.X = size;
 	lpConsoleCurrentFontEx->dwFontSize.Y = size;
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), false, lpConsoleCurrentFontEx);
+}
+
+//function for setting to lowercase
+std::string lowerCase(std::string input) {
+	for (int i = 0; i < input.length(); i++) {
+		input[i] = tolower(input[i]);
+	}
+
+	return input;
 }
