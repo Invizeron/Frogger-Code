@@ -1,6 +1,4 @@
 #include "Master.h"
-#include <vector>
-#include <conio.h>
 using namespace std;
 
 //Simple messages/outputs the program gives title.
@@ -30,15 +28,18 @@ int delay = 0;
 // Player coorcinate variable
 int playerY = 0, playerX = 5;
 int lives = 0;
+
 // Checks if the player is on a log
 bool onLog = false;
 
-int spd1, spd2, spd3, spd4, spd5, spd6, spd7, spd8, spd9, spd10, lvlType; // Speed for each row
+// Speed for each row
+int spd1, spd2, spd3, spd4, spd5, spd6, spd7, spd8, spd9, spd10, lvlType;
 bool canMove = false; // check movement
-int currLvl = 1; // Checks which level is being played
 
-// Checks the game mode
 bool inf = false;
+
+char footX = 0;
+char footY = 0;
 
 // Grid size
 const char x = 11;
@@ -136,10 +137,10 @@ const char level6[y][x] = {
 	{'1','1','1','w','w','w','w','w','w','1','1',},
 	{'w','w','w','1','1','w','w','w','1','1','w',},
 	{'#',' ','#',' ',' ',' ',' ',' ','#',' ','#',},
-	{'9',' ','9',' ',' ',' ',' ',' ','9',' ','9',},
+	{'9',' ',' ',' ','9',' ',' ','9',' ','9',' ',},
 	{'#',' ','#',' ',' ',' ',' ','#','#',' ','#',},
 	{'#',' ','#','#','#','#','#',' ','#',' ','#',},
-	{' ','9',' ',' ',' ','9',' ',' ','9',' ',' ',},
+	{' ','9',' ',' ',' ',' ',' ',' ',' ',' ',' ',},
 	{'#','#',' ','#','#',' ','#','#','#',' ','#',},
 	{' ',' ','#',' ','#',' ','#',' ',' ','#',' ',},
 	{' ',' ',' ',' ','#','0','#',' ',' ',' ',' ',},
@@ -151,10 +152,8 @@ const char line3[1][11] = { {'w','1','1','w','1','1','w','w','1','1','1',} };
 const char line4[1][11] = { {' ',' ','9',' ',' ',' ','9',' ','9',' ',' ',} };
 const char line5[1][11] = { {' ',' ',' ',' ',' ','9',' ','9',' ','9',' ',} };
 
-// Temp map
 char map[y][x] = {};
 
-// Randomly generates speed
 void setSpeed()
 {
 	spd1 = rand() % 3 + 1;
@@ -196,18 +195,7 @@ void setMap() {
 		{
 			for (int j = 0; j < x; j++)
 			{
-				if (currLvl == 1)
-					map[i][j] = level1[i][j];
-				if (currLvl == 2)
-					map[i][j] = level2[i][j];
-				if (currLvl == 3)
-					map[i][j] = level3[i][j];
-				if (currLvl == 4)
-					map[i][j] = level4[i][j];
-				if (currLvl == 5)
-					map[i][j] = level5[i][j];
-				if (currLvl == 6)
-					map[i][j] = level6[i][j];
+				map[i][j] = level1[i][j];
 			}
 		}
 	}
@@ -264,7 +252,6 @@ void setMap() {
 	}
 }
 
-// Checks the speed
 void checkMove(int row)
 {
 	if (row == 1)
@@ -486,6 +473,15 @@ void update(int playerY, int playerX)
 							canMove = false;
 						}
 					}
+					if (map[i][j] == '#')
+					{
+						if (k == 0)
+							std::cout << "-+-+-";
+						if (k == 1)
+							std::cout << "-+-+-";
+						if (k == 2)
+							std::cout << "-+-+-";
+					}
 				}
 
 				// Draws the log with the slug on
@@ -550,6 +546,39 @@ void update(int playerY, int playerX)
 					}
 				}
 
+				if (map[i][j] == '6')
+				{
+					if (k == 0)
+					{
+						std::cout << "_____";
+					}
+					if (k == 1)
+					{
+						std::cout << "|   |";
+					}
+					if (k == 2)
+					{
+						std::cout << "|___/";
+					}
+					if (map[i][j + 1] == '0' && k == 2)
+					{
+						map[i][j] = ' ';
+						map[i][j + 1] = '6';
+						alive = false;
+						lives = lives - 1;
+					}
+					/*else if (j < 10 && k == 2)
+					{
+						map[i][j] = ' ';
+						map[i][j + 1] = '6';
+					}
+					else if (footX == 10 && k == 2) {
+
+						map[i][j] = ' ';
+						map[i][0] = '6';
+					}*/
+				}
+
 				if (map[i][j] == '9')
 				{
 					if (k == 0)
@@ -596,15 +625,6 @@ void update(int playerY, int playerX)
 							canMove = false;
 						}
 					}
-				}
-				if (map[i][j] == '#')
-				{
-					if (k == 0)
-						std::cout << "-+-+-";
-					if (k == 1)
-						std::cout << "-+-+-";
-					if (k == 2)
-						std::cout << "-+-+-";
 				}
 			}
 			std::cout << "|\n";
@@ -723,7 +743,7 @@ void update(int playerY, int playerX)
 				lives--;
 				onLog = false;
 			}
-			else if (playerX > 0 && map[playerY][playerX - 1] != '#')
+			else if (playerX > 0)
 			{
 				direction = 3;
 				playerX = playerX - 1;
@@ -748,7 +768,7 @@ void update(int playerY, int playerX)
 				lives--;
 				onLog = false;
 			}
-			else if (playerX < 10 && map[playerY][playerX + 1] != '#')
+			else if (playerX < 10)
 			{
 				direction = 2;
 				playerX = playerX + 1;
@@ -761,44 +781,6 @@ void update(int playerY, int playerX)
 			endGame = true;
 			break;
 		case 'r':
-			setMap();
-			direction = 1;
-			lives = 3;
-			onLog = false;
-			break;
-
-		case '1':
-			currLvl = 1;
-			setMap();
-			direction = 1;
-			lives = 3;
-			break;
-		case '2':
-			currLvl = 2;
-			setMap();
-			direction = 1;
-			lives = 3;
-			break;
-		case '3':
-			currLvl = 3;
-			setMap();
-			direction = 1;
-			lives = 3;
-			break;
-		case '4':
-			currLvl = 4;
-			setMap();
-			direction = 1;
-			lives = 3;
-			break;
-		case '5':
-			currLvl = 5;
-			setMap();
-			direction = 1;
-			lives = 3;
-			break;
-		case '6':
-			currLvl = 6;
 			setMap();
 			direction = 1;
 			lives = 3;
@@ -847,7 +829,7 @@ int main() {
 	centreString("The Slug King");
 	SetConsoleCursorPosition(hOut, cursorPos);
 	//sleep and clear for formatting and output
-	Sleep(0);
+	Sleep(3000);
 	system("CLS");
 begin:
 	while (!endGame) {
@@ -933,19 +915,13 @@ begin:
 			}
 		}
 	}
-Forever:
+	Forever:
 	//plays the music file defined in the other .cpp
 	playMusic();
 	//Updating map
 	fontSize(20);
-
 	//inf = true;
-	//setSpeed();
-
-	spd2 = 1;
-	spd4 = 1;
-	spd6 = 2;
-
+	setSpeed();
 	setMap();
 	lives = 3;
 

@@ -12,3 +12,6 @@ void fontSize(int size);
 
 //Change to lowercase
 std::string lowerCase(std::string input);
+
+//Draw Slug King at the end
+void drawSlug(int);

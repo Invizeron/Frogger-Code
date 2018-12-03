@@ -7,6 +7,7 @@ The code comprises of audio, and text manipulation (center & fontsize).
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include <vector>
 
 using std::string;
 using namespace std;
@@ -18,5 +19,5 @@ using namespace std;
 #include "String.h"
 
 
-
-#include "Header.h"
+//Test 
+//#include "Header.h"
